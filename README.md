@@ -13,7 +13,7 @@ As páginas e o painel ficam no repositório [`menzu-front`](https://github.com/
 ## Publicar no Render
 
 Crie um Blueprint apontando para este repositório (branch `main`, arquivo `render.yaml`) e preencha no painel as
-variáveis marcadas como segredo. `NEXT_PUBLIC_APP_URL` é o endereço do front.
+variáveis marcadas como segredo. `APP_URL` é o endereço do front.
 
 O plano gratuito serve só para testes: o serviço suspende sem acesso e a fila é apagada a cada
 reinício. Para pedidos reais use um plano com disco persistente.

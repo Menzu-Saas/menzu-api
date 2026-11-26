@@ -137,7 +137,7 @@ export type OrderDeps = {
 };
 
 async function client(deps?: OrderDeps): Promise<Db> {
-  return deps?.supabase ?? createClient<Database>(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!, {auth:{persistSession:false,autoRefreshToken:false,detectSessionInUrl:false}});
+  return deps?.supabase ?? createClient<Database>(process.env.SUPABASE_URL!, process.env.SUPABASE_PUBLISHABLE_KEY!, {auth:{persistSession:false,autoRefreshToken:false,detectSessionInUrl:false}});
 }
 
 function serviceClientFor(deps?: OrderDeps): Db | null {

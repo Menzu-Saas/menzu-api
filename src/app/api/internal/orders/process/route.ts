@@ -12,7 +12,7 @@ export async function GET(request: Request) {
   let ready = false;
   if (serverKey) {
     try {
-      const client = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!, {
+      const client = createClient(process.env.SUPABASE_URL!, process.env.SUPABASE_PUBLISHABLE_KEY!, {
         auth: { persistSession: false, autoRefreshToken: false, detectSessionInUrl: false },
       });
       const { data, error } = await client.rpc("menzu_guest_order_ready", { p_server_key: serverKey })

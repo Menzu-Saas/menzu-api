@@ -34,15 +34,15 @@ services:
         value: "true"
       - key: ASAAS_ENVIRONMENT
         value: sandbox # só mude para production depois da homologação
-      - key: NEXT_PUBLIC_SUPABASE_URL
+      - key: SUPABASE_URL
         value: https://rcbvzdnixkdarnvqtjic.supabase.co
       # Endereço público do FRONT (https://...vercel.app): usado nos links e retornos de pagamento.
-      - key: NEXT_PUBLIC_APP_URL
+      - key: APP_URL
         sync: false
       # Deixe vazio para manter só pagamento presencial; "asaas" liga Pix e cartão.
       - key: MENZU_ONLINE_PROVIDER
         sync: false
-      - key: NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY
+      - key: SUPABASE_PUBLISHABLE_KEY
         sync: false
       - key: SUPABASE_SERVICE_ROLE_KEY
         sync: false
