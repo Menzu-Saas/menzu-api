@@ -1,0 +1,3 @@
+REVOKE SELECT ON TABLE public.restaurants FROM authenticated;
+REVOKE SELECT (created_by) ON TABLE public.restaurants FROM authenticated;
+GRANT SELECT (id, slug, name, description, phone, whatsapp, instagram, address_street, address_number, address_complement, address_neighborhood, address_city, address_state, address_cep, lat, lng, logo_url, banner_url, primary_color, status, min_order_cents, avg_prep_minutes, default_delivery_fee_cents, accepts_delivery, accepts_pickup, accepts_dine_in, accepts_scheduling, payment_methods, timezone, onboarding_completed, created_at, updated_at) ON TABLE public.restaurants TO authenticated;

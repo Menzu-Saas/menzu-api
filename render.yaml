@@ -1,0 +1,67 @@
+# Render Blueprint: um único serviço com a API (rotas /api do Next.js), a fila de pedidos e o
+# varredor de pagamentos. As páginas ficam no repositório menzu-front, publicado na Vercel. Variáveis com "sync: false" são segredos: preencha no painel do Render.
+#
+# PLANO GRATUITO, SÓ PARA TESTES. Não há disco: a fila (SQLite) é apagada a cada reinício ou deploy, e
+# pedidos ainda não processados se perdem. O serviço suspende sem acesso e o varredor para junto.
+# Para pedidos reais, use um plano pago com disco persistente em /var/data (MENZU_QUEUE_DB nesse disco).
+services:
+  - type: web
+    name: menzu-api
+    runtime: node
+    branch: main
+    plan: free
+    region: virginia # mesma região do Supabase (us-east-1)
+    buildCommand: npm ci --include=dev && npm run build
+    startCommand: node scripts/render-start.mjs
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_VERSION
+        value: "24"
+      - key: NEXT_TELEMETRY_DISABLED
+        value: "1"
+      - key: MENZU_QUEUE_DB
+        value: /tmp/menzu/order-queue.sqlite # temporário no plano gratuito
+      - key: MENZU_QUEUE_CAPACITY
+        value: "250"
+      - key: MENZU_QUEUE_RATE
+        value: "5"
+      - key: MENZU_QUEUE_CONCURRENCY
+        value: "4"
+      - key: ASAAS_SWEEP_SECONDS
+        value: "60"
+      # Localização -> endereço no checkout (serviço público Photon; para alto volume use um provedor contratado).
+      - key: MENZU_GEOCODING_ENABLED
+        value: "true"
+      - key: ASAAS_ENVIRONMENT
+        value: sandbox # só mude para production depois da homologação
+      - key: NEXT_PUBLIC_SUPABASE_URL
+        value: https://rcbvzdnixkdarnvqtjic.supabase.co
+      # Endereço público do FRONT (https://...vercel.app): usado nos links e retornos de pagamento.
+      - key: NEXT_PUBLIC_APP_URL
+        sync: false
+      # Deixe vazio para manter só pagamento presencial; "asaas" liga Pix e cartão.
+      - key: MENZU_ONLINE_PROVIDER
+        sync: false
+      - key: NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY
+        sync: false
+      - key: SUPABASE_SERVICE_ROLE_KEY
+        sync: false
+      - key: MENZU_SESSION_SECRET
+        sync: false
+      - key: MENZU_ORDER_API_KEY
+        sync: false
+      - key: MENZU_QUEUE_SECRET
+        sync: false
+      # As duas chaves de cifragem precisam ser as MESMAS que cifraram os dados já gravados no banco.
+      - key: MENZU_CPF_ENCRYPTION_KEY
+        sync: false
+      - key: ASAAS_ENCRYPTION_KEY
+        sync: false
+      - key: ASAAS_API_KEY
+        sync: false
+      - key: ASAAS_PLATFORM_WALLET_ID
+        sync: false
+      - key: ASAAS_WEBHOOK_TOKEN
+        sync: false
+      - key: ASAAS_RECONCILE_SECRET
+        sync: false
