@@ -2,13 +2,17 @@
 // payment sweeper. The queue and the sweeper only talk to the app over the loopback interface.
 // If the app or the queue dies, everything stops so the platform restarts the service cleanly.
 import { spawn } from "node:child_process";
+import { resolveEnv } from "./env-compat.mjs";
 
 const port = String(process.env.PORT || 10000);
 const queuePort = String(process.env.MENZU_QUEUE_PORT || 3103);
 const app = `http://127.0.0.1:${port}`;
 
+const resolved = resolveEnv(process.env);
+for (const warning of resolved.warnings) console.warn(`[start] ${warning}`);
+
 const env = {
-  ...process.env,
+  ...resolved.env,
   MENZU_QUEUE_PORT: queuePort,
   MENZU_QUEUE_HOST: "127.0.0.1",
   MENZU_QUEUE_URL: `http://127.0.0.1:${queuePort}`,
